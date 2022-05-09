@@ -36,7 +36,12 @@ public class CategoriaController {
 	// GET --> Obtener un recurso una lista
 	@GetMapping("/api/categorias")
 	public List<Categoria> obtener() {
-		return categoriaService.obtenerTodos();
+		List<Categoria> listaCategorias = categoriaService.obtenerTodos();
+		for (Categoria categoria : listaCategorias) {
+			categoria.setAlimentos(null);
+			categoria.setRecetas(null);
+		}
+		return listaCategorias;
 	}
 
 	// Con el @PathVariable le decimos cuál es el nombre del parámetro que va a

@@ -1,10 +1,12 @@
 package com.intelligentFood.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -29,6 +31,8 @@ public class Receta {
 	@OneToMany(mappedBy = "receta")
 	private List<Consumicion_dia> consumiciones_dias;
 
+	@ManyToMany(mappedBy = "recetas")
+	private List<Alimento> alimentos = new ArrayList<>();
 	public Receta() {
 	}
 

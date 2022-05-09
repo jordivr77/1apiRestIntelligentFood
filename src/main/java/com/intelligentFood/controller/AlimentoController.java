@@ -37,7 +37,15 @@ public class AlimentoController {
 	// GET --> Obtener un recurso una lista
 	@GetMapping("/api/alimentos")
 	public List<Alimento> obtener() {
-		return alimentoService.obtenerTodos();
+		List<Alimento> listaAlimentos = alimentoService.obtenerTodos();
+		for (Alimento alimento : listaAlimentos) {
+			alimento.setConsumiciones_dias(null);
+			alimento.setRecetas(null);
+			alimento.getCategoria().setAlimentos(null);
+			alimento.getCategoria().setRecetas(null);
+			
+		}
+		return listaAlimentos;
 	}
 
 	// Con el @PathVariable le decimos cuál es el nombre del parámetro que va a
