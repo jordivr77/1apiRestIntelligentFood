@@ -17,6 +17,7 @@ public class Categoria {
 	@GeneratedValue
 	private Long id;
 	private String nombre;
+	private String imagen;
 	
 	@OneToMany(mappedBy = "categoria")
 	private List<Alimento> alimentos;
