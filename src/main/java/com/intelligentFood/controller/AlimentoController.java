@@ -73,4 +73,18 @@ public class AlimentoController {
 		alimentoService.eliminar(id);
 	}
 
+	@GetMapping("/api/alimentos/categorias/{idCategoria}")
+	public List<Alimento> obtenerAlimentoPorCategoria(@PathVariable("idCategoria") Long idCategoria) {
+		
+		List<Alimento> listaAlimentos = alimentoService.findByCategoria(idCategoria);
+		for (Alimento alimento : listaAlimentos) {
+			alimento.setConsumiciones_dias(null);
+			alimento.setRecetas(null);
+			alimento.getCategoria().setAlimentos(null);
+			alimento.getCategoria().setRecetas(null);
+			
+		}
+		return listaAlimentos;
+		
+	}
 }
