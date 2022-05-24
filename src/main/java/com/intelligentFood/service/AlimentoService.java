@@ -7,13 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.intelligentFood.model.Alimento;
+import com.intelligentFood.model.Categoria;
 import com.intelligentFood.repository.AlimentoRepository;
+import com.intelligentFood.repository.CategoriaRepository;
 
 @Service
 public class AlimentoService {
 
 	@Autowired
 	private AlimentoRepository alimentoRepository;
+	
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 
 	public void guardarAlimento(Alimento alimento) {
 		alimentoRepository.save(alimento);
@@ -38,5 +43,10 @@ public class AlimentoService {
 	// A partir del id sabremos el registro a eliminar
 	public void eliminar(Long id) {
 		alimentoRepository.deleteById(id);
+	}
+	
+	public List<Alimento> findByCategoria(Long idCategoria) {
+		Categoria categoria = categoriaRepository.getById(idCategoria);
+		return alimentoRepository.findByCategoria(categoria);
 	}
 }
