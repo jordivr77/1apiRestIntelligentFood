@@ -1,5 +1,6 @@
 package com.intelligentFood.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.intelligentFood.model.Consumicion_dia;
 import com.intelligentFood.model.Dia;
 import com.intelligentFood.service.DiaService;
 
@@ -32,8 +34,7 @@ public class DiaController {
 	@PostMapping("/api/dias")
 	public Dia guardarDia(@RequestBody Dia dia) {
 		logger.info("Dia registro: {}", dia);
-		diaService.guardarDia(dia);
-		return dia;
+		return diaService.guardarDia(dia);
 	}
 
 	// GET --> Obtener un recurso una lista
@@ -60,6 +61,39 @@ public class DiaController {
 	@DeleteMapping("/api/dias/{id}")
 	public void eliminar(@PathVariable("id") Long id) {
 		diaService.eliminar(id);
+	}
+	
+	@GetMapping("/api/dia/hoy/{idUsuario}")
+	public Dia obtenerDiaHoyUsuario(@PathVariable("idUsuario") Long idUsuario) {
+		LocalDate fecha = LocalDate.now();
+		Dia dia = diaService.obtenerDiaPorFechaUsuario(fecha, idUsuario);
+		if (dia != null) {
+			for (Consumicion_dia consumicion : dia.getConsumiciones_dias()) {
+				consumicion.setDia(null);
+			}
+			dia.getUsuario().setDias(null);
+		}
+		return dia;
+	}
+	
+	@PostMapping("/api/dia/nuevo/{idUsuario}")
+	public void nuevoDia(@PathVariable("idUsuario") Long idUsuario) {
+		LocalDate fecha = LocalDate.now();
+		Dia dia = new Dia();
+		dia.setFecha(fecha);
+		diaService.guardarDia(dia, idUsuario);
+	}
+	
+	@GetMapping("/api/dias/usuario/{idUsuario}")
+	public List<Dia> obtenerDiasUsuario(@PathVariable("idUsuario") Long idUsuario) {
+		List<Dia> dias = diaService.obtenerDiasPorUsuario(idUsuario);
+		for (Dia dia : dias) {
+			for (Consumicion_dia consumicion : dia.getConsumiciones_dias()) {
+				consumicion.setDia(null);
+			}
+			dia.getUsuario().setDias(null);
+		}
+		return dias;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.intelligentFood.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,16 +8,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.intelligentFood.model.Dia;
+import com.intelligentFood.model.Usuario;
 import com.intelligentFood.repository.DiaRepository;
+import com.intelligentFood.repository.UsuarioRepository;
 
 @Service
 public class DiaService {
 
 	@Autowired
 	private DiaRepository diaRepository;
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 
-	public void guardarDia(Dia dia) {
+	public Dia guardarDia(Dia dia) {
+		return diaRepository.save(dia);
+	}
+	
+	public Dia guardarDia(Dia dia, Long idUsuario) {
+		Usuario usuario = usuarioRepository.getById(idUsuario);
+		dia.setUsuario(usuario);
 		diaRepository.save(dia);
+		return dia;
 	}
 
 	// Obtenemos TODOS los registros que tenemos en la BD
@@ -38,6 +50,16 @@ public class DiaService {
 	// A partir del id sabremos el registro a eliminar
 	public void eliminar(Long id) {
 		diaRepository.deleteById(id);
+	}
+	
+	public Dia obtenerDiaPorFechaUsuario(LocalDate fehca, Long idUsuario) {
+		Usuario usuario = usuarioRepository.getById(idUsuario);
+		return diaRepository.findByFechaAndUsuario(fehca, usuario);
+	}
+	
+	public List<Dia> obtenerDiasPorUsuario(Long idUsuario) {
+		Usuario usuario = usuarioRepository.getById(idUsuario);
+		return diaRepository.findByUsuario(usuario);
 	}
 	
 }
