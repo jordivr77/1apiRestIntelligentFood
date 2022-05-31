@@ -36,8 +36,8 @@ public class DiaService {
 		return diaRepository.findAll();
 	}
 
-	public Optional<Dia> obtenerDia(Long id) {
-		return diaRepository.findById(id);
+	public Dia obtenerDia(Long id) {
+		return diaRepository.getById(id);
 	}
 
 	// Método que nos permita actualizar el recurso
