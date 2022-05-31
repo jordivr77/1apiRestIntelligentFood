@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.intelligentFood.model.Consumicion_dia;
+import com.intelligentFood.model.Dia;
 import com.intelligentFood.service.Consumicion_diaService;
+import com.intelligentFood.service.DiaService;
 
 @RestController
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.PUT, RequestMethod.POST, RequestMethod.DELETE})
@@ -27,6 +29,8 @@ public class Consumicion_diaController {
 
 	@Autowired
 	private Consumicion_diaService consumicion_diaService;
+	@Autowired
+	private DiaService diaService;
 
 	// Tipo de petición POST para crear y almacenar un recurso
 	@PostMapping("/api/consumiciondias")
@@ -61,6 +65,26 @@ public class Consumicion_diaController {
 	@DeleteMapping("/api/consumiciondias/{id}")
 	public void eliminar(@PathVariable("id") Long id) {
 		consumicion_diaService.eliminar(id);
+	}
+	
+	@GetMapping("/api/consumiciondia/hoy/{id}")
+	public List<Consumicion_dia> obtenerConsumicionesDiaHoy(@PathVariable("id") Long id ) {
+		Dia hoy = diaService.obtenerDia(id);
+		List<Consumicion_dia> consumicionesHoy = consumicion_diaService.obtenerPorDia(hoy);
+		for (Consumicion_dia consumicion_dia : consumicionesHoy) {
+			consumicion_dia.setDia(null);
+			if (consumicion_dia.getAlimento() != null) {
+				consumicion_dia.getAlimento().setCategoria(null);
+				consumicion_dia.getAlimento().setConsumiciones_dias(null);
+				consumicion_dia.getAlimento().setRecetas(null);
+			} else {
+				consumicion_dia.getReceta().setAlimentos(null);
+				consumicion_dia.getReceta().setCategoria(null);
+				consumicion_dia.getReceta().setConsumiciones_dias(null);
+				consumicion_dia.getReceta().setUsuario(null);
+			}
+		}
+		return consumicionesHoy;
 	}
 
 }

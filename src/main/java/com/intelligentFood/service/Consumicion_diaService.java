@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.intelligentFood.model.Consumicion_dia;
+import com.intelligentFood.model.Dia;
 import com.intelligentFood.repository.Consumicion_diaRepository;
 
 @Service
@@ -38,6 +39,10 @@ public class Consumicion_diaService {
 	// A partir del id sabremos el registro a eliminar
 	public void eliminar(Long id) {
 		consumicion_diaRepository.deleteById(id);
+	}
+	
+	public List<Consumicion_dia> obtenerPorDia(Dia dia) {
+		return consumicion_diaRepository.findByDia(dia);
 	}
 	
 }

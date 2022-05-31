@@ -46,7 +46,7 @@ public class DiaController {
 	// Con el @PathVariable le decimos cuál es el nombre del parámetro que va a
 	// venir en la petición y su tipo de dato
 	@GetMapping("/api/dias/{id}")
-	public Optional<Dia> obtenerDia(@PathVariable("id") Long id) {
+	public Dia obtenerDia(@PathVariable("id") Long id) {
 		return diaService.obtenerDia(id);
 	}
 
@@ -70,8 +70,11 @@ public class DiaController {
 		if (dia != null) {
 			for (Consumicion_dia consumicion : dia.getConsumiciones_dias()) {
 				consumicion.setDia(null);
+				consumicion.setAlimento(null);
+				consumicion.setReceta(null);
 			}
 			dia.getUsuario().setDias(null);
+			dia.getUsuario().setRecetas(null);
 		}
 		return dia;
 	}
@@ -90,8 +93,11 @@ public class DiaController {
 		for (Dia dia : dias) {
 			for (Consumicion_dia consumicion : dia.getConsumiciones_dias()) {
 				consumicion.setDia(null);
+				consumicion.setAlimento(null);
+				consumicion.setReceta(null);
 			}
 			dia.getUsuario().setDias(null);
+			dia.getUsuario().setRecetas(null);
 		}
 		return dias;
 	}
