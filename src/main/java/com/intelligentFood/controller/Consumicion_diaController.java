@@ -1,5 +1,6 @@
 package com.intelligentFood.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,5 +87,32 @@ public class Consumicion_diaController {
 		}
 		return consumicionesHoy;
 	}
+	
+	@GetMapping("/api/consumicionesdia/usuario/{id}")
+	public List<Consumicion_dia> obtenerConsumicionesPorUsuario(@PathVariable("id") Long id ) {
+		List<Consumicion_dia> consumiciones = consumicion_diaService.obtenerTodas();
+		List<Consumicion_dia> consumicionesUsuario = new ArrayList<>();
+		for (Consumicion_dia consumicion_dia : consumiciones) {
+			if (consumicion_dia.getDia().getUsuario().getId() == id) {
+				consumicion_dia.getDia().setConsumiciones_dias(null);
+				consumicion_dia.getDia().getUsuario().setDias(null);
+				consumicion_dia.getDia().getUsuario().setRecetas(null);
+				if (consumicion_dia.getAlimento() != null) {
+					consumicion_dia.getAlimento().setCategoria(null);
+					consumicion_dia.getAlimento().setConsumiciones_dias(null);
+					consumicion_dia.getAlimento().setRecetas(null);
+				} else {
+					consumicion_dia.getReceta().setAlimentos(null);
+					consumicion_dia.getReceta().setCategoria(null);
+					consumicion_dia.getReceta().setConsumiciones_dias(null);
+					consumicion_dia.getReceta().setUsuario(null);
+				}
+				consumicionesUsuario.add(consumicion_dia);
+			}
+		}
+		return consumicionesUsuario;
+	}
+	
+	
 
 }
