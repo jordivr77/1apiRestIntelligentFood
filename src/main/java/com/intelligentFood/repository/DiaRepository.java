@@ -15,5 +15,5 @@ import com.intelligentFood.model.Usuario;
 @Repository
 public interface DiaRepository extends JpaRepository<Dia, Long> {
 	public Dia findByFechaAndUsuario(LocalDate fecha, Usuario usuario);
-	public List<Dia> findByUsuario(Usuario usuario);
+	public List<Dia> findByUsuarioOrderByFechaDesc(Usuario usuario);
 }

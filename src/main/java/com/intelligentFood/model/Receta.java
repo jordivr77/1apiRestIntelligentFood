@@ -20,6 +20,7 @@ public class Receta {
 	@GeneratedValue
 	private Long id;
 	private String nombre;
+	private String preparacion;
 	private double kcalorias;
 	
 	@ManyToOne

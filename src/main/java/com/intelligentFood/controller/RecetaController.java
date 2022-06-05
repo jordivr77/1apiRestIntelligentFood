@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.intelligentFood.model.Alimento;
 import com.intelligentFood.model.Receta;
+import com.intelligentFood.model.Usuario;
 import com.intelligentFood.service.RecetaService;
 
 @RestController
@@ -29,17 +31,28 @@ public class RecetaController {
 	private RecetaService recetaService;
 
 	// Tipo de petición POST para crear y almacenar un recurso
-	@PostMapping("/api/recetas")
-	public Receta guardarReceta(@RequestBody Receta receta) {
+	@PostMapping("/api/recetas/{idUsuario}")
+	public Receta guardarReceta(@PathVariable("idUsuario") Long idUsuario,@RequestBody Receta receta) {
 		logger.info("Registro receta: {}", receta);
-		recetaService.guardarReceta(receta);
+		recetaService.guardarReceta(receta, idUsuario);
 		return receta;
 	}
 
 	// GET --> Obtener un recurso una lista
 	@GetMapping("/api/recetas")
 	public List<Receta> obtener() {
-		return recetaService.obtenerTodas();
+		List<Receta> recetas = recetaService.obtenerTodas();
+		for (Receta receta : recetas) {
+			for (Alimento alimento : receta.getAlimentos()) {
+				alimento.setCategoria(null);
+				alimento.setConsumiciones_dias(null);
+				alimento.setRecetas(null);
+			}
+			receta.setCategoria(null);
+			receta.setConsumiciones_dias(null);
+			receta.setUsuario(null);
+		}
+		return recetas;
 	}
 
 	// Con el @PathVariable le decimos cuál es el nombre del parámetro que va a

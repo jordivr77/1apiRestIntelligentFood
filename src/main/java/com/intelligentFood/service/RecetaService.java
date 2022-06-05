@@ -7,15 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.intelligentFood.model.Receta;
+import com.intelligentFood.model.Usuario;
 import com.intelligentFood.repository.RecetaRepository;
+import com.intelligentFood.repository.UsuarioRepository;
 
 @Service
 public class RecetaService {
 
 	@Autowired
 	private RecetaRepository recetaRepository;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 
-	public void guardarReceta(Receta receta) {
+	public void guardarReceta(Receta receta, Long idUsuario) {
+		Usuario usuario = usuarioRepository.getById(idUsuario);
 		recetaRepository.save(receta);
 	}
 

@@ -59,7 +59,7 @@ public class DiaService {
 	
 	public List<Dia> obtenerDiasPorUsuario(Long idUsuario) {
 		Usuario usuario = usuarioRepository.getById(idUsuario);
-		return diaRepository.findByUsuario(usuario);
+		return diaRepository.findByUsuarioOrderByFechaDesc(usuario);
 	}
 	
 }
